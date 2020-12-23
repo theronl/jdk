@@ -183,8 +183,12 @@ void JfrOSInterface::JfrOSInterfaceImpl::functionality_not_implemented(char** st
   const char* not_impl = "Functionality_not_implemented";
   const size_t not_impl_len = strlen(not_impl);
   *str = NEW_C_HEAP_ARRAY(char, not_impl_len+1, mtTracing);
+      // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
   strncpy(*str, not_impl, not_impl_len);
   (*str)[not_impl_len] = '\0';
+#pragma GCC diagnostic pop
 }
 
 JfrOSInterface::JfrOSInterface() {

@@ -100,7 +100,11 @@ static char* copy_path(const char* path) {
   assert(path != NULL, "invariant");
   const size_t path_len = strlen(path);
   char* new_path = JfrCHeapObj::new_array<char>(path_len + 1);
+      // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
   strncpy(new_path, path, path_len);
+#pragma GCC diagnostic pop
   new_path[path_len] = '\0';
   return new_path;
 }

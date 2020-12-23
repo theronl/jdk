@@ -180,14 +180,22 @@ template <> void DCmdArgument<char*>::parse_value(const char* str,
     _value = NULL;
   } else {
     _value = NEW_C_HEAP_ARRAY(char, len+1, mtInternal);
+    // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
     strncpy(_value, str, len);
+#pragma GCC diagnostic pop
     _value[len] = 0;
   }
 }
 
 template <> void DCmdArgument<char*>::init_value(TRAPS) {
   if (has_default() && _default_string != NULL) {
+    // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
     this->parse_value(_default_string, strlen(_default_string), THREAD);
+#pragma GCC diagnostic pop
     if (HAS_PENDING_EXCEPTION) {
      fatal("Default string must be parsable");
     }

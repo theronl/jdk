@@ -202,7 +202,9 @@ void ClassLoaderExt::process_jar_manifest(ClassPathEntry* entry,
       } else {
         file_end = end;
       }
-
+      // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
       int name_len = (int)strlen(file_start);
       if (name_len > 0) {
         ResourceMark rm(THREAD);
@@ -213,6 +215,7 @@ void ClassLoaderExt::process_jar_manifest(ClassPathEntry* entry,
         trace_class_path("library = ", libname);
         ClassLoader::update_class_path_entry_list(libname, true, false);
       }
+#pragma GCC diagnostic pop
 
       file_start = file_end;
     }

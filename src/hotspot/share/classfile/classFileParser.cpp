@@ -5758,7 +5758,10 @@ void ClassFileParser::prepend_host_package_name(const InstanceKlass* unsafe_anon
     char* new_anon_name =
       NEW_RESOURCE_ARRAY(char, host_pkg_len + 1 + class_name_len);
     // Copy host package name and trailing /.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
     strncpy(new_anon_name, host_pkg_name, host_pkg_len);
+#pragma GCC diagnostic pop
     new_anon_name[host_pkg_len] = '/';
     // Append unsafe anonymous class name. The unsafe anonymous class name can contain odd
     // characters.  So, do a strncpy instead of using sprintf("%s...").

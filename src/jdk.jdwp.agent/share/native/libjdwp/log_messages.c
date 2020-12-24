@@ -71,9 +71,14 @@ get_time_stamp(char *tbuf, size_t ltbuf)
                 "%d.%m.%Y %T", localtime(&t));
     (void)strftime(timestamp_postfix, sizeof(timestamp_postfix),
                 "%Z", localtime(&t));
+      // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+#pragma GCC diagnostic ignored "-Wformat-truncation"
     (void)snprintf(tbuf, ltbuf,
                    "%s.%.3d %s", timestamp_prefix,
                    (int)(millisecs), timestamp_postfix);
+#pragma GCC diagnostic pop
 }
 
 /* Get basename of filename */

@@ -48,6 +48,9 @@ struct hb_set_t
     uint32_t index;
   };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wclass-memaccess"
+
   struct page_t
   {
     inline void init0 (void) { memset (&v, 0, sizeof (v)); }
@@ -84,6 +87,7 @@ struct hb_set_t
         *lb |= ((mask (b) << 1) - 1);
       }
     }
+#pragma GCC diagnostic pop
 
     inline bool is_equal (const page_t *other) const
     {

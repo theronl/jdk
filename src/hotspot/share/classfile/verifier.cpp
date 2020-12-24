@@ -2970,6 +2970,9 @@ void ClassVerifier::verify_anewarray(
     cp_index_to_type(index, cp, CHECK_VERIFY(this));
   int length;
   char* arr_sig_str;
+  // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
   if (component_type.is_array()) {     // it's an array
     const char* component_name = component_type.name()->as_utf8();
     // Check for more than MAX_ARRAY_DIMENSIONS
@@ -2994,6 +2997,7 @@ void ClassVerifier::verify_anewarray(
     strncpy(&arr_sig_str[2], component_name, length - 2);
     arr_sig_str[length - 1] = ';';
   }
+#pragma GCC diagnostic pop
   Symbol* arr_sig = create_temporary_symbol(
     arr_sig_str, length, CHECK_VERIFY(this));
   VerificationType new_array_type = VerificationType::reference_type(arr_sig);

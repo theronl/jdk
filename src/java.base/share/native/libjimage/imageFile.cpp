@@ -492,6 +492,10 @@ void ImageFileReader::location_path(ImageLocation& location, char* path, size_t 
     // Get module string.
     const char* module = location.get_attribute(ImageLocation::ATTRIBUTE_MODULE, strings);
     // If module string is not empty string.
+    // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
     if (*module != '\0') {
         // Get length of module name.
         length = strlen(module);
@@ -534,6 +538,7 @@ void ImageFileReader::location_path(ImageLocation& location, char* path, size_t 
         *next++ = '.';
         strncpy(next, extension, length); next += length;
     }
+#pragma GCC diagnostic pop
     // Make sure there is no buffer overflow.
     assert((size_t)(next - path) < max && "buffer overflow");
     // Terminate string.

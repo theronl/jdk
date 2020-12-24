@@ -354,11 +354,15 @@ void xmlStream::va_done(const char* format, va_list ap) {
   const char* kind = format;
   const char* kind_end = strchr(kind, ' ');
   size_t kind_len = (kind_end != NULL) ? (kind_end - kind) : format_len;
+  // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
   strncpy(buffer, kind, kind_len);
   strcpy(buffer + kind_len, "_done");
   if (kind_end != NULL) {
     strncat(buffer, format + kind_len, sizeof(buffer) - (kind_len + 5 /* _done */) - 1);
   }
+#pragma GCC diagnostic pop
   // Output the trailing event with the timestamp.
   va_begin_elem(buffer, ap);
   stamp();

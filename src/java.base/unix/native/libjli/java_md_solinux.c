@@ -744,7 +744,10 @@ ContinueInNewThread0(int (JNICALL *continuation)(void *), jlong stack_size, void
     }
     pthread_attr_setguardsize(&attr, 0); // no pthread guard page on java threads
 
-    if (pthread_create(&tid, &attr, (void *(*)(void*))continuation, (void*)args) == 0) {
+    /* TODO: Fix me */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-function-type"
+    if (pthread_create(&tid, &attr, (void *(*)(void*))(continuation), (void*)args) == 0) {
       void * tmp;
       pthread_join(tid, &tmp);
       rslt = (int)(intptr_t)tmp;
@@ -757,7 +760,8 @@ ContinueInNewThread0(int (JNICALL *continuation)(void *), jlong stack_size, void
       */
       rslt = continuation(args);
     }
-
+#pragma GCC diagnostic pop
+    
     pthread_attr_destroy(&attr);
 #else /* __solaris__ */
     thread_t tid;

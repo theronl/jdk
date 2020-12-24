@@ -834,11 +834,15 @@ _cmsTRANSFORM* AllocEmptyTransform(cmsContext ContextID, cmsPipeline* lut,
                             p->FromInputFloat = _cmsGetFormatter(ContextID, *InputFormat, cmsFormatterInput, CMS_PACK_FLAGS_FLOAT).FmtFloat;
                             p->ToOutputFloat = _cmsGetFormatter(ContextID, *OutputFormat, cmsFormatterOutput, CMS_PACK_FLAGS_FLOAT).FmtFloat;
 
+                            // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wcast-function-type"
                             // Save the day? (Ignore the warning)
                             if (Plugin->OldXform) {
                                    p->OldXform = (_cmsTransformFn) p->xform;
                                    p->xform = _cmsTransform2toTransformAdaptor;
                             }
+#pragma GCC diagnostic pop
 
                             return p;
                      }

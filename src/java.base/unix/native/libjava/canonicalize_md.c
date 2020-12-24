@@ -211,7 +211,11 @@ canonicalize(char *original, char *resolved, int len)
         char *p, *end, *r = NULL;
         char path[PATH_MAX + 1];
 
+        // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
         strncpy(path, original, sizeof(path));
+#pragma GCC diagnostic pop
         if (path[PATH_MAX] != '\0') {
             errno = ENAMETOOLONG;
             return -1;

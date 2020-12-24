@@ -73,6 +73,8 @@
 #    define DIR_CHAR    '/'
 #endif
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
 
 // Symbols
 typedef enum {
@@ -952,6 +954,7 @@ void InSymbol(cmsIT8* it8)
                     //  TODO: how to manage out-of-memory conditions?
                 }
 
+                // TODO: Fix me
                 if (BuildAbsolutePath(it8->str,
                                       it8->FileStack[it8->IncludeSP]->FileName,
                                       FileNest->FileName, cmsMAX_PATH-1) == FALSE) {
@@ -2817,3 +2820,4 @@ void CMSEXPORT cmsIT8DefineDblFormat(cmsHANDLE hIT8, const char* Formatter)
     it8 ->DoubleFormatter[sizeof(it8 ->DoubleFormatter)-1] = 0;
 }
 
+#pragma GCC diagnostic pop

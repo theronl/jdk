@@ -34,6 +34,10 @@
 #define HB_DEBUG 0
 #endif
 
+/* TODO: Fix me */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-attributes"
+
 static inline bool
 _hb_debug (unsigned int level,
            unsigned int max_level)
@@ -440,5 +444,6 @@ struct hb_no_trace_t {
 #define TRACE_DISPATCH(this, format) hb_no_trace_t<typename context_t::return_t> trace
 #endif
 
+#pragma GCC diagnostic pop
 
 #endif /* HB_DEBUG_HH */

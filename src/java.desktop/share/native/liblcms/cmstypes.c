@@ -3203,8 +3203,12 @@ cmsBool Type_NamedColor_Write(struct _cms_typehandler_struct* self, cmsIOHANDLER
     if (!_cmsWriteUInt32Number(io, nColors)) return FALSE;
     if (!_cmsWriteUInt32Number(io, NamedColorList ->ColorantCount)) return FALSE;
 
+    // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
     strncpy(prefix, (const char*) NamedColorList->Prefix, 32);
     strncpy(suffix, (const char*) NamedColorList->Suffix, 32);
+#pragma GCC diagnostic pop
 
     suffix[32] = prefix[32] = 0;
 

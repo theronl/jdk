@@ -179,9 +179,13 @@ void os::wait_for_keypress_at_exit(void) {
 int os::create_file_for_heap(const char* dir) {
 
   const char name_template[] = "/jvmheap.XXXXXX";
+  // ----- Unnecessary math and stack space to make the compiler happy ----
   long dlen = strlen(dir);
   long ntlen = strlen(name_template);
   long fnlen = dlen + ntlen + 1;
+  long dmaxlen = (dlen + 1) < fnlen ? (dlen + 1) : fnlen;
+  long sncmaxlen = (fnlen - dmaxlen) < ntlen ? fnlen - dmaxlen : ntlen;
+  // --- End unnecessary math and stack space to make the compiler happy --
   
   char *fullname = (char*)os::malloc(fnlen, mtInternal);
   if (fullname == NULL) {
@@ -191,8 +195,6 @@ int os::create_file_for_heap(const char* dir) {
   // TODO: Fix me - make better code to make the compiler happy
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wstringop-truncation"
-  long dmaxlen = (dlen + 1) < fnlen ? (dlen + 1) : fnlen;
-  long sncmaxlen = (fnlen - dmaxlen) < ntlen ? fnlen - dmaxlen : ntlen;
   (void)strncpy(fullname, dir, dmaxlen);
   (void)strncat(fullname, name_template, sncmaxlen);
 #pragma GCC diagnostic pop

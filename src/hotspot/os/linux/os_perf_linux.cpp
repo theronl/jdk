@@ -819,6 +819,9 @@ char* SystemProcessInterface::SystemProcesses::ProcessIterator::get_cmdline() {
 
   jio_snprintf(buffer, PATH_MAX, "/proc/%s/cmdline", _entry->d_name);
   buffer[PATH_MAX - 1] = '\0';
+  // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
   if ((fp = fopen(buffer, "r")) != NULL) {
     size_t size = 0;
     char   dummy;
@@ -847,6 +850,7 @@ char* SystemProcessInterface::SystemProcesses::ProcessIterator::get_cmdline() {
     }
     fclose(fp);
   }
+#pragma GCC diagnostic pop
   return cmdline;
 }
 
@@ -860,6 +864,9 @@ char* SystemProcessInterface::SystemProcesses::ProcessIterator::get_exe_path() {
 }
 
 char* SystemProcessInterface::SystemProcesses::ProcessIterator::allocate_string(const char* str) const {
+  // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
   if (str != NULL) {
     size_t len = strlen(str);
     char* tmp = NEW_C_HEAP_ARRAY(char, len+1, mtInternal);
@@ -867,6 +874,7 @@ char* SystemProcessInterface::SystemProcesses::ProcessIterator::allocate_string(
     tmp[len] = '\0';
     return tmp;
   }
+#pragma GCC diagnostic pop
   return NULL;
 }
 

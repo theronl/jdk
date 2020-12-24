@@ -179,14 +179,23 @@ void os::wait_for_keypress_at_exit(void) {
 int os::create_file_for_heap(const char* dir) {
 
   const char name_template[] = "/jvmheap.XXXXXX";
-
-  char *fullname = (char*)os::malloc((strlen(dir) + strlen(name_template) + 1), mtInternal);
+  long dlen = strlen(dir);
+  long ntlen = strlen(name_template);
+  long fnlen = dlen + ntlen + 1;
+  
+  char *fullname = (char*)os::malloc(fnlen, mtInternal);
   if (fullname == NULL) {
     vm_exit_during_initialization(err_msg("Malloc failed during creation of backing file for heap (%s)", os::strerror(errno)));
     return -1;
   }
-  (void)strncpy(fullname, dir, strlen(dir)+1);
-  (void)strncat(fullname, name_template, strlen(name_template));
+  // TODO: Fix me - make better code to make the compiler happy
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+  long dmaxlen = (dlen + 1) < fnlen ? (dlen + 1) : fnlen;
+  long sncmaxlen = (fnlen - dmaxlen) < ntlen ? fnlen - dmaxlen : ntlen;
+  (void)strncpy(fullname, dir, dmaxlen);
+  (void)strncat(fullname, name_template, sncmaxlen);
+#pragma GCC diagnostic pop
 
   os::native_path(fullname);
 

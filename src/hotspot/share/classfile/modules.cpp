@@ -328,6 +328,9 @@ void Modules::define_module(jobject module, jboolean is_open, jstring version,
                         package_name, module_name));
     }
 
+    // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
     // Only modules defined to either the boot or platform class loader, can define a "java/" package.
     if (!h_loader.is_null() &&
         !SystemDictionary::is_platform_class_loader(h_loader()) &&
@@ -345,6 +348,7 @@ void Modules::define_module(jobject module, jboolean is_open, jstring version,
       jio_snprintf(message, len, "%s%s%s%s", msg_text1, class_loader_name, msg_text2, pkg_name);
       THROW_MSG(vmSymbols::java_lang_IllegalArgumentException(), message);
     }
+#pragma GCC diagnostic pop
 
     Symbol* pkg_symbol = SymbolTable::new_symbol(package_name, CHECK);
     pkg_list->append(pkg_symbol);

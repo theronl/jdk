@@ -236,12 +236,16 @@ JfrThreadGroup::JfrThreadGroupEntry::~JfrThreadGroupEntry() {
 
 void JfrThreadGroup::JfrThreadGroupEntry::set_thread_group_name(const char* tgname) {
   assert(_thread_group_name == NULL, "invariant");
+  // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
   if (tgname != NULL) {
     size_t len = strlen(tgname);
     _thread_group_name = JfrCHeapObj::new_array<char>(len+1);
     strncpy(_thread_group_name, tgname, len);
     _thread_group_name[len] = '\0';
   }
+#pragma GCC diagnostic pop
 }
 
 const oop JfrThreadGroup::JfrThreadGroupEntry::thread_group() const {

@@ -102,8 +102,12 @@ void ObjectStartArray::set_covered_region(MemRegion mr) {
     if (!_virtual_space.expand_by(expand_by)) {
       vm_exit_out_of_memory(expand_by, OOM_MMAP_ERROR, "object start array expansion");
     }
+    // TODO: Fix me
+    // #pragma GCC diagnostic push
+    // #pragma GCC diagnostic ignored "-Werror=class-memaccess"
     // Clear *only* the newly allocated region
-    memset(_blocks_region.end(), clean_block, expand_by);
+    memset(reinterpret_cast<void*>(_blocks_region.end()), clean_block, expand_by);
+    // #pragma GCC diagnostic pop
   }
 
   if (requested_blocks_size_in_bytes < current_blocks_size_in_bytes) {
@@ -121,7 +125,8 @@ void ObjectStartArray::set_covered_region(MemRegion mr) {
 }
 
 void ObjectStartArray::reset() {
-  memset(_blocks_region.start(), clean_block, _blocks_region.byte_size());
+    // TODO: Fix me
+    memset(reinterpret_cast<void*>(_blocks_region.start()), clean_block, _blocks_region.byte_size());
 }
 
 bool ObjectStartArray::object_starts_in_range(HeapWord* start_addr,

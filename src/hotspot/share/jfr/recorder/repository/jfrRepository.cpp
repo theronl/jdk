@@ -200,6 +200,9 @@ const char* const RepositoryIterator::filter(const char* entry) const {
   if (entry == NULL) {
     return NULL;
   }
+  // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
   const size_t entry_len = strlen(entry);
   if (entry_len <= 2) {
     // for "." and ".."
@@ -211,6 +214,7 @@ const char* const RepositoryIterator::filter(const char* entry) const {
   }
   strncpy(entry_name, entry, entry_len);
   entry_name[entry_len] = '\0';
+#pragma GCC diagnostic pop
   const char* const fully_qualified_path_entry = fully_qualified(entry_name);
   if (NULL == fully_qualified_path_entry) {
     return NULL;
@@ -326,6 +330,9 @@ static const char* create_emergency_dump_path() {
   }
   char* emergency_dump_path = NULL;
   pos += fsep_len;
+  // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
   if (Arguments::copy_expand_pid(filename_fmt, strlen(filename_fmt), &buffer[pos], O_BUFLEN - pos)) {
     const size_t emergency_filename_length = strlen(buffer);
     emergency_dump_path = NEW_RESOURCE_ARRAY_RETURN_NULL(char, emergency_filename_length + 1);
@@ -335,6 +342,7 @@ static const char* create_emergency_dump_path() {
     strncpy(emergency_dump_path, buffer, emergency_filename_length);
     emergency_dump_path[emergency_filename_length] = '\0';
   }
+#pragma GCC diagnostic pop
   return emergency_dump_path;
 }
 
@@ -398,6 +406,9 @@ void JfrRepository::on_vm_error() {
 
 bool JfrRepository::set_path(const char* path) {
   assert(path != NULL, "trying to set the repository path with a NULL string!");
+  // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
   if (_path != NULL) {
     // delete existing
     JfrCHeapObj::free(_path, strlen(_path) + 1);
@@ -409,6 +420,7 @@ bool JfrRepository::set_path(const char* path) {
   }
   strncpy(_path, path, path_len);
   _path[path_len] = '\0';
+#pragma GCC diagnostic pop
   return true;
 }
 

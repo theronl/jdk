@@ -47,6 +47,10 @@
  * Service Provider Interface - see src/share/javavm/export/jdwpTransport.h.
  */
 
+    // TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+
 static int serverSocketFD = -1;
 static int socketFD = -1;
 static jdwpTransportCallback *callback;
@@ -1285,3 +1289,5 @@ jdwpTransport_OnLoad(JavaVM *vm, jdwpTransportCallback* cbTablePtr,
 
     return JNI_OK;
 }
+
+#pragma GCC diagnostic pop

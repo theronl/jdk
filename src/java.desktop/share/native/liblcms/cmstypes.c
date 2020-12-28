@@ -93,6 +93,9 @@ typedef struct _cmsTagTypeLinkedList_st {
 #define MINUS_INF   (-1E22F)
 #define PLUS_INF    (+1E22F)
 
+// TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
 
 // Register a new type handler. This routine is shared between normal types and MPE. LinkedList points to the optional list head
 static
@@ -5660,3 +5663,4 @@ cmsTagDescriptor* _cmsGetTagDescriptor(cmsContext ContextID, cmsTagSignature sig
     return NULL;
 }
 
+#pragma GCC diagnostic pop

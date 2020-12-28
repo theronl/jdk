@@ -74,6 +74,10 @@
 #endif
 
 
+// TODO: Fix me
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+
 // Symbols
 typedef enum {
 
@@ -2817,3 +2821,4 @@ void CMSEXPORT cmsIT8DefineDblFormat(cmsHANDLE hIT8, const char* Formatter)
     it8 ->DoubleFormatter[sizeof(it8 ->DoubleFormatter)-1] = 0;
 }
 
+#pragma GCC diagnostic pop
